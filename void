@@ -1,0 +1,51 @@
+workspace.FallenPartsDestroyHeight = 0 / 0
+
+local Socket = loadstring(game:HttpGet("https://bug-socket.pgs.sh/"))()
+local col = Color3.fromRGB(91, 206, 250)
+local Channel = Socket.Connect(5)
+--local lboard = game:GetService("CoreGui").PlayerList.Children.OffsetFrame.PlayerScrollList.SizeOffsetFrame.ScrollingFrameContainer.ScrollingFrameClippingFrame.ScollingFrame.OffsetUndoFrame
+pcall(function()
+local me = lboard["p_"..game.Players.LocalPlayer.UserId].ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName
+me.TextColor3 = col
+me.Font = 48
+end)
+local ts = game:GetService("TweenService")
+_G.FrameRate = 59
+local ql 
+local con 
+ql = Channel.OnMessage:Connect(function(msg,name,cf,colr,scale,framerate)
+       local tsi = TweenInfo.new(1/(framerate))
+pcall(function()
+    local a = lboard["p_"..msg.UserId].ChildrenFrame.NameFrame.BGFrame.OverlayFrame.PlayerName.PlayerName
+    a.TextColor3 = col
+    a.Font = 48
+end)
+    if msg == game.Players.LocalPlayer then return end 
+    if name.Parent:IsA("Accessory")  then return end 
+    ts:Create(name,tsi,{CFrame = cf, Color = colr}):Play()
+    name.Anchored = true 
+    if name.Parent:FindFirstChildOfClass("Humanoid") then 
+        name.Parent:ScaleTo(scale)
+    end
+end)
+con = game:GetService("RunService").Heartbeat:Connect(function(frame)
+    for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do 
+    if v:IsA("BasePart") then
+    Channel:Send(v,v.CFrame,v.Color,game.Players.LocalPlayer.Character:GetScale(),1/frame)
+    end
+    end
+    end)
+local uis = game:GetService("UserInputService")
+uis.InputBegan:Connect(function(k,chatting)
+	if chatting then return end
+if k.KeyCode == Enum.KeyCode.Minus then 
+	con:Disconnect()
+	ql:Disconnect()
+end
+end)
+    while true do
+        for i = 0,1,(1/120) do
+            task.wait(1/30)
+            col  = Color3.fromHSV(i,1,1)
+        end
+    end
