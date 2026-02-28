@@ -1,4 +1,4 @@
-print("update 1")
+print("work pls")
 --[[
  ...    :::::        ::        ::        ::        ::        ::        
  ;;     ;;;;;;       ;;;       ;;;       ;;;       ;;;       ;;;       
@@ -3835,14 +3835,15 @@ Util.SetMotor6DTransform = function(motor, transform)
 	motor:SetDesiredAngle(angle)
 	local axis, angle = transform:ToAxisAngle()
 	local newangle = axis * angle
+	local offset = Vector3.zero 
+	if transform:FindFirstChildOfClass("SpecialMesh") then 
+		offset = transform:FindFirstChildOfClass("SpecialMesh").Position
+	end
 	pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
 	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
 end
-Util.SetMotor6DOffset = function(motor, offset, TargetPart)
-	if TargetPart:FindFirstChildOfClass("SpecialMesh") then 
-		offset = TargetPart:FindFirstChildOfClass("SpecialMesh").Offset
-	end
-	Util.SetMotor6DTransform(motor, motor.C0:Inverse() * TargetPart.CFrame)
+Util.SetMotor6DOffset = function(motor, offset)
+	Util.SetMotor6DTransform(motor, motor.C0:Inverse() * offset * motor.C1)
 end
 
 Util.ShowPartHitbox = function(part)
