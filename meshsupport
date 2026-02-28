@@ -3828,7 +3828,7 @@ local HumanoidLASetHookState do
 	end
 end
 
-Util.SetMotor6DTransform = function RCA6dToCFrame(Motor6D, TargetPart, ReferencePart)
+Util.SetMotor6DTransform = function(Motor6D, TargetPart, ReferencePart)
     local rel = ReferencePart.CFrame:Inverse() * TargetPart.CFrame
     local delta = Motor6D.C0:Inverse() * rel * Motor6D.C1
     local axis, angle = delta:ToAxisAngle()
@@ -3839,7 +3839,6 @@ Util.SetMotor6DTransform = function RCA6dToCFrame(Motor6D, TargetPart, Reference
 	end
     sethiddenproperty(Motor6D, 'ReplicateCurrentOffset6D', delta.Position + offset)
     sethiddenproperty(Motor6D, 'ReplicateCurrentAngle6D', newangle)
-end)
 end
 Util.SetMotor6DOffset = function(motor, offset)
 	--Util.SetMotor6DTransform(motor, motor.C0:Inverse() * offset * motor.C1)
