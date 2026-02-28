@@ -3829,16 +3829,18 @@ local HumanoidLASetHookState do
 	end
 end
 
-Util.SetMotor6DTransform = function(motor, transform)
+Util.SetMotor6DTransform = function(motor, TargetPart, transform, ReferencePart)
 	local name = motor.Name
 	motor.MaxVelocity = 9e9
 	local _, _, angle = transform:ToEulerAngles(Enum.RotationOrder.ZYX)
 	motor:SetDesiredAngle(angle)
+	local rel = ReferencePart.CFrame:Inverse() * TargetPart.CFrame
+	local delta = Motor6D.C0:Inverse() * rel * Motor6D.C1
 	local axis, angle = transform:ToAxisAngle()
-	local newangle = axis * angle
-	local offset = Vector3.zero
-	if workspace["(C) Uhhhhhh V1.0.5 BETA"]:FindFirstChildOfClass("SpecialMesh") then 
-	offset = workspace["(C) Uhhhhhh V1.0.5 BETA"]:FindFirstChildOfClass("SpecialMesh").Offset
+    local newangle = axis * angle
+	local offset = Vector3.zero 
+	if TargetPart:FindFirstChildOfClass("SpecialMesh") then 
+		offset = TargetPart:FindFirstChildOfClass("SpecialMesh").Offset
 	end
 	pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
 	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
