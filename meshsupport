@@ -1,4 +1,4 @@
-print("asssssssasa")
+print("ass")
 --[[
  ...    :::::        ::        ::        ::        ::        ::        
  ;;     ;;;;;;       ;;;       ;;;       ;;;       ;;;       ;;;       
@@ -3828,20 +3828,23 @@ local HumanoidLASetHookState do
 	end
 end
 
-Util.SetMotor6DTransform = function(Motor6D, TargetPart, ReferencePart)
+Util.SetMotor6DTransform = function(motor, transform, Motor6D, TargetPart, ReferencePart)
+	local name = motor.Name
+	motor.MaxVelocity = 9e9
+	local _, _, angle = transform:ToEulerAngles(Enum.RotationOrder.ZYX)
+	motor:SetDesiredAngle(angle)
     local rel = ReferencePart.CFrame:Inverse() * TargetPart.CFrame
-    local delta = Motor6D.C0:Inverse() * rel * Motor6D.C1
-    local axis, angle = delta:ToAxisAngle()
-    local newangle = axis * angle
+    local axis, angle = transform:ToAxisAngle()
+	local newangle = axis * angle
 	local offset = Vector3.zero 
 	if TargetPart:FindFirstChildOfClass("SpecialMesh") then 
 		offset = TargetPart:FindFirstChildOfClass("SpecialMesh").Offset
 	end
-    sethiddenproperty(Motor6D, 'ReplicateCurrentOffset6D', delta.Position + offset)
-    sethiddenproperty(Motor6D, 'ReplicateCurrentAngle6D', newangle)
+    pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
+	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
 end
 Util.SetMotor6DOffset = function(motor, offset)
-	--Util.SetMotor6DTransform(motor, motor.C0:Inverse() * offset * motor.C1)
+	Util.SetMotor6DTransform(motor, motor.C0:Inverse() * offset * motor.C1)
 end
 
 Util.ShowPartHitbox = function(part)
