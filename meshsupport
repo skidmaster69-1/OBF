@@ -3836,9 +3836,10 @@ Util.SetMotor6DTransform = function(motor, transform)
 	motor:SetDesiredAngle(angle)
 	local axis, angle = transform:ToAxisAngle()
 	local newangle = axis * angle
-	if transform:FindFirstChildOfClass("SpecialMesh") then 
-	offset = transform:FindFirstChildOfClass("SpecialMesh").Offset
-end
+	local offset = Vector3.zero
+	if workspace["(C) Uhhhhhh V1.0.5 BETA"]:FindFirstChildOfClass("SpecialMesh") then 
+	offset = workspace["(C) Uhhhhhh V1.0.5 BETA"]:FindFirstChildOfClass("SpecialMesh").Offset
+	end
 	pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
 	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
 end
