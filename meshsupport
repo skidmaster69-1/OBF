@@ -1255,11 +1255,7 @@ local UIMainWindow, WindowContent do
 	end)
 end
 
---
-if transform:FindFirstChildOfClass("SpecialMesh") then 
-		offset = transform:FindFirstChildOfClass("SpecialMesh").Offset
-	end
---
+
 
 local _funcrefreshes = {}
 local function AddToRenderStep(func, linkto)
@@ -3933,6 +3929,10 @@ Util.PredictionFlingPart = function(target)
 			return target
 		end
 	end
+end
+
+if transform:FindFirstChildOfClass("SpecialMesh") then 
+	offset = transform:FindFirstChildOfClass("SpecialMesh").Offset
 end
 
 SaveData.Reanimator = SaveData.Reanimator or {}
