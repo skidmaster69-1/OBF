@@ -1,4 +1,4 @@
-
+warn("hi")
 --[[
  ...    :::::        ::        ::        ::        ::        ::        
  ;;     ;;;;;;       ;;;       ;;;       ;;;       ;;;       ;;;       
@@ -3837,10 +3837,14 @@ Util.SetMotor6DTransform = function(motor, transform)
 	local newangle = axis * angle
 	local offset = Vector3.zero
 
-	local mesh = TargetPart:FindFirstChildWhichIsA("SpecialMesh", true)
-	if mesh then
-    	offset = mesh.Offset
-	end
+	if TargetPart:IsA("MeshPart") then
+    	offset = TargetPart.MeshOffset
+	else
+    	local mesh = TargetPart:FindFirstChildWhichIsA("SpecialMesh", true)
+    	if mesh then
+    		offset = mesh.Offset
+		end
+	end		
 	pcall(sethiddenproperty, motor, "ReplicateCurrentOffset6D", transform.Position)
 	pcall(sethiddenproperty, motor, "ReplicateCurrentAngle6D", newangle)
 end
